@@ -37,29 +37,36 @@ const cardData = [
     icon: <FaHandHoldingUsd />,
     color: "#2ED275",
     label: "Total Withdrawn",
+ 
     amount: "$999",
   },
   {
     icon: <FaUserPlus />,
     color: "#FFC457",
     label: "Direct Referral Bonus",
+       sublabel1:"Direct Referral Bonus :300",
+     sublabel2:"Total Referral Bonus :100",
     amount: "$1000",
   },
   {
     icon: <FaUsers />,
     color: "#57C4FF",
     label: "Team Bonus",
+   
     amount: "$1000",
   },
   {
     icon: <FaChartLine />,
     color: "#FF579A",
     label: "Monthly Profit",
+     
     amount: "$10",
   },
   {
     icon: <FaUserFriends />,
     color: "#2ED275",
+    sublabel1:"Direct Referral Bonus :300",
+     sublabel2:"Total Referral Bonus :100",
     label: "Total Team Size",
     amount: "999",
   },
@@ -120,6 +127,13 @@ const Earnings = () => {
             </div>
             <div className={`text-gray-100 font-medium text-sm ${darkMode ? "text-gray-100" : "text-gray-600"}`}>
               {card.label}
+            </div>
+            <div className={`text-gray-100 font-medium  text-sm ${darkMode ? "text-gray-100" : "text-gray-600"}`}>
+              {card.sublabel1}
+            </div>
+            <div className={`text-gray-100 
+               text-sm  font-medium ${darkMode ? "text-gray-100" : "text-gray-600"}`}>
+              {card.sublabel2}
             </div>
             <div className={`text-xl font-bold ${darkMode ? "text-gray-100" : "text-gray-800"}`}>
               {card.amount}

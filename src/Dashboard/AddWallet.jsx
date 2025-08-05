@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PaymentIcon1 from "../icon/PaymentIcon1";
 import PaymentIcon2 from "../icon/PaymentIcon2";
 import PaymentIcon3 from "../icon/PaymentIcon3";
@@ -33,10 +33,31 @@ const cardData = [
 ];
 
 const AddWallet = () => {
+  const [selectedAmount, setSelectedAmount] = useState(0);
+  const [customAmount, setCustomAmount] = useState("");
+  const [selectedOption, setSelectedOption] = useState("");
+  const [targetUsername, setTargetUsername] = useState("");
+
   const context = useContext(ThemeContext);
   console.log("Full Context:", context); // Check if context exists at all
   const { darkMode } = context || {};
   console.log("Dark Mode:", darkMode);
+
+  const handleButtonClick = (amount) => {
+    if (amount === "Custom") {
+      setCustomAmount("");
+      setSelectedAmount(0);
+    } else {
+      const numericAmount = parseFloat(amount.replace("$", ""));
+      setCustomAmount(amount); // string like "$10" or ""
+      setSelectedAmount(numericAmount);
+    }
+  };
+  const handleCustomInput = (e) => {
+    const value = parseFloat(e.target.value);
+    setCustomAmount(e.target.value);
+    setSelectedAmount(isNaN(value) ? 0 : value);
+  };
 
   return (
     <div
@@ -120,6 +141,7 @@ const AddWallet = () => {
                     ? "bg-gray-700 text-blue-400 border-blue-400 hover:bg-gray-600"
                     : "bg-white text-blue-600 border-blue-600 hover:bg-gray-200"
                 } px-6 py-2 rounded-full shadow border transition-colors duration-200`}
+                onClick={() => handleButtonClick(amount)}
               >
                 {amount}
               </button>
@@ -136,7 +158,9 @@ const AddWallet = () => {
           </p>
           <input
             type="number"
+            value={selectedAmount}
             placeholder="Enter amount"
+            onChange={handleCustomInput}
             className={`w-full p-2 ${
               darkMode
                 ? "bg-gray-700 border-gray-600 text-gray-200"
@@ -153,48 +177,90 @@ const AddWallet = () => {
           >
             Transfer Type
           </p>
-          <select
-            className={`w-full p-2 ${
-              darkMode
-                ? "bg-gray-700 border-gray-600 text-gray-200"
-                : "bg-white border-gray-300 text-gray-700"
-            } border rounded-md mb-6 transition-colors duration-200`}
-            defaultValue=""
-          >
-            <option value="" disabled className={darkMode ? "bg-gray-700" : ""}>
-              Select transfer type
-            </option>
-            <option value="wallet" className={darkMode ? "bg-gray-700" : ""}>
-              Wallet Transfer
-            </option>
-            <option value="bank" className={darkMode ? "bg-gray-700" : ""}>
-              Bank Transfer
-            </option>
-            <option value="upi" className={darkMode ? "bg-gray-700" : ""}>
-              UPI Transfer
-            </option>
-            <option value="crypto" className={darkMode ? "bg-gray-700" : ""}>
-              Crypto Transfer
-            </option>
-          </select>
+<select
+  value={selectedOption}
+  onChange={(e) => setSelectedOption(e.target.value)}
+  className={`w-full p-2 ${
+    darkMode
+      ? "bg-gray-700 border-gray-600 text-gray-200"
+      : "bg-white border-gray-300 text-gray-700"
+  } border rounded-md mb-6 transition-colors duration-200`}
+>
+  <option value="" disabled className={darkMode ? "bg-gray-700" : ""}>
+    Select
+  </option>
+  <option value="wallet" className={darkMode ? "bg-gray-700" : ""}>
+    Own Account
+  </option>
+  <option value="bank" className={darkMode ? "bg-gray-700" : ""}>
+    Others Users Account
+  </option>
+</select>
+
+{selectedOption === "bank" && (
+  <div className="mb-6">
+    <label
+      htmlFor="targetUsername"
+      className={`block text-sm font-medium mb-1 ${darkMode ?"text-gray-300":"text-gray-800"}`}
+    >
+       Target Username
+    </label>
+    <input
+      type="text"
+      id="targetUsername"
+      name="targetUsername"
+      placeholder="Enter username"
+      className={`w-full px-4 py-2 rounded-md border text-sm
+        ${
+          darkMode
+            ? "bg-gray-800 text-white "
+            : "bg-white text-black border-gray-300 focus:ring-blue-500"
+        }
+        focus:outline-none focus:ring-2 transition duration-200`}
+    />
+  </div>
+)}
+
+
 
           {/* Summary */}
+          {/* Summary Section */}
           <p
-            className={`text-md font-medium mb-2 ${
-              darkMode ? "text-gray-300" : "text-gray-700"
+            className={`text-lg font-semibold mb-2 ${
+              darkMode ? "text-gray-200" : "text-gray-800"
             }`}
           >
             Summary
           </p>
-          <textarea
-            className={`w-full p-3 border ${
+
+          <div
+            className={`w-full p-4 rounded-xl shadow-md border transition-colors duration-200 mb-6 ${
               darkMode
-                ? "border-gray-600 text-gray-200 bg-gray-700"
-                : "border-gray-300 text-gray-700 bg-white"
-            } rounded-md mb-6 text-sm resize-none h-24 transition-colors duration-200`}
-            readOnly={false}
-            defaultValue={`Transaction Charge: $0.00\nTotal Payable: $100.00\nYou will receive: $100.00`}
-          />
+                ? "bg-gray-800 border-gray-700 text-gray-200"
+                : "bg-gray-50 border-gray-200 text-gray-800"
+            }`}
+          >
+            <div className="space-y-3 text-sm">
+              <div>
+                <span className={darkMode ? "text-gray-400" : "text-gray-600"}>
+                  Transaction Charge:{" "}
+                </span>
+                <span className="font-medium">$0.00</span>
+              </div>
+              <div className="">
+                <span className={darkMode ? "text-gray-400" : "text-gray-600"}>
+                  Total Amount:{" "}
+                </span>
+                <span className="font-medium">${selectedAmount}</span>
+              </div>
+              <div>
+                <span className={darkMode ? "text-gray-400" : "text-gray-600"}>
+                  You will receive:{" "}
+                </span>
+                <span className="font-medium">${selectedAmount}</span>
+              </div>
+            </div>
+          </div>
 
           {/* Payment Method */}
           <p

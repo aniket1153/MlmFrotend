@@ -26,6 +26,7 @@ import TransferWallet from "./Dashboard/TransferWallet";
 import WithdrawalRequest from "./Dashboard/WithdrawalRequest";
 import FilterPanel from "./DashboardComponets/FilterPanel";
 import OrgChart from "./DashboardComponets/OrgChart";
+import LiveChart from "./DashboardComponets/LiveChart";
 
 const App = () => {
   return (
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/wallet/add" element={<AddWallet />} />
           <Route path="/wallet/transfer" element={<TransferWallet />} />
           <Route path="/wallet/withdraw" element={<WithdrawalRequest />} />
+          <Route path="/earnings/live" element={<LiveChart />} />
         </Route>
       </Routes>
     </Router>

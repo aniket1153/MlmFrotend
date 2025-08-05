@@ -9,6 +9,7 @@ const menuItems = [
   { label: "Referral", path: "/referral" },
   { label: "Team", path: "/team" },
   { label: "Earnings", path: "/earnings" },
+   { label: "Live Earnings", path: "/earnings/live" },
   { label: "Add Wallet", path: "/wallet/add" },
   { label: "Transfer Wallet", path: "/wallet/transfer" },
   { label: "Withdrawl Request", path: "/wallet/withdraw" },

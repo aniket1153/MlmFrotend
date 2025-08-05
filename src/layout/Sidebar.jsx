@@ -20,12 +20,32 @@ import { LuSquareUserRound } from "react-icons/lu";
 import DashboardIcon4 from "../icon/DashboardIcon4";
 import DashboardIcon5 from "../icon/DashboardIcon5";
 import DashboardIcon6 from "../icon/DashboardIcon6";
+import { FaCreditCard } from "react-icons/fa";
+
 
 const menuItems = [
   { label: "Dashboard", icon: <DashboardIcon1 />, path: "/dashboard" },
   { label: "Referral", icon: <DashboardIcon2 />, path: "/referral" },
   { label: "Team", icon: <RiTeamFill />, path: "/team" },
-  { label: "Earnings", icon: <FaDollarSign />, path: "/earnings" },
+{
+  label: "Earnings",
+  icon: <FaDollarSign />,
+  path: "/earnings",
+  children: [
+    {
+      label: "Earnings",
+      icon: <FaCreditCard size={24} />,
+      path: "/earnings",
+    },
+    {
+      label: "Live Earnings",
+      icon: <FaMoneyCheckAlt size={24} />,
+      path: "/earnings/live", // ✅ updated
+    },
+  ],
+},
+
+
   {
     label: "Wallet Management",
     icon: <AiOutlineWallet size={24} />,
@@ -135,7 +155,7 @@ const Sidebar = () => {
                     }`}
                   >
                     <span className="text-lg">{item.icon}</span>
-                    <span className="text-sm font-medium">{item.label}</span>
+                    <span className="text-sm ">{item.label}</span>
                   </div>
 
                   {/* Submenu items */}

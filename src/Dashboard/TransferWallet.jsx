@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { FaWallet, FaMoneyBillWave, FaShoppingCart, FaGift } from "react-icons/fa";
 import PaymentIcon1 from "../icon/PaymentIcon1";
 import PaymentIcon2 from "../icon/PaymentIcon2";
@@ -34,6 +34,7 @@ const cardData = [
 ];
 
 const TransferWallet = () => {
+  const [selectedOption, setSelectedOption] = useState("");
     const context = useContext(ThemeContext);
     console.log("Full Context:", context); // Check if context exists at all
     const { darkMode } = context || {};
@@ -117,29 +118,49 @@ const TransferWallet = () => {
             Transfer Type
           </p>
           <select
-            className={`w-full p-2 ${
-              darkMode
-                ? "bg-gray-700 border-gray-600 text-gray-200"
-                : "bg-white border-gray-300 text-gray-700"
-            } border rounded-md mb-6 transition-colors duration-200`}
-            defaultValue=""
-          >
-            <option value="" disabled className={darkMode ? "bg-gray-700" : ""}>
-              Select transfer type
-            </option>
-            <option value="wallet" className={darkMode ? "bg-gray-700" : ""}>
-              Wallet Transfer
-            </option>
-            <option value="bank" className={darkMode ? "bg-gray-700" : ""}>
-              Bank Transfer
-            </option>
-            <option value="upi" className={darkMode ? "bg-gray-700" : ""}>
-              UPI Transfer
-            </option>
-            <option value="crypto" className={darkMode ? "bg-gray-700" : ""}>
-              Crypto Transfer
-            </option>
-          </select>
+  value={selectedOption}
+  onChange={(e) => setSelectedOption(e.target.value)}
+  className={`w-full p-2 ${
+    darkMode
+      ? "bg-gray-700 border-gray-600 text-gray-200"
+      : "bg-white border-gray-300 text-gray-700"
+  } border rounded-md mb-6 transition-colors duration-200`}
+>
+  <option value="" disabled className={darkMode ? "bg-gray-700" : ""}>
+    Select
+  </option>
+  <option value="wallet" className={darkMode ? "bg-gray-700" : ""}>
+    Own Account
+  </option>
+  <option value="bank" className={darkMode ? "bg-gray-700" : ""}>
+    Others Users Account
+  </option>
+</select>
+
+{selectedOption === "bank" && (
+  <div className="mb-6">
+    <label
+      htmlFor="targetUsername"
+           className={`block text-sm font-medium mb-1 ${darkMode ?"text-gray-300":"text-gray-800"}`}
+    >
+      Target Username
+    </label>
+    <input
+      type="text"
+      id="targetUsername"
+      name="targetUsername"
+      placeholder="Enter username"
+      className={`w-full px-4 py-2 rounded-md border text-sm
+        ${
+          darkMode
+            ? "bg-gray-800 text-white  "
+            : "bg-white text-black border-gray-300 focus:ring-blue-500"
+        }
+        focus:outline-none focus:ring-2 transition duration-200`}
+    />
+  </div>
+)}
+
 
 
           {/* Summary */}

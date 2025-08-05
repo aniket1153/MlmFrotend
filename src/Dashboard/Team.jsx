@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   FaEye,
   FaEdit,
@@ -12,6 +12,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import img1 from '../assets/TableImg.jpg';
 import TableIcon from '../icon/TableIcon';
 import TableIcon2 from '../icon/TableIcon2';
+import { ThemeContext } from '../context/ThemeContext';
 
 const sampleData = new Array(10).fill({
   image: img1,
@@ -37,6 +38,11 @@ const Team = () => {
 const [fromDate, setFromDate] = useState("2025-07-24");
 const [toDate, setToDate] = useState("2025-07-25");
 
+const context = useContext(ThemeContext);
+      console.log("Full Context:", context);
+      const { darkMode } = context || {};
+      console.log("Dark Mode:", darkMode);
+
 
   const indexOfLastRow = currentPage * rowsPerPage;
 const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -46,7 +52,8 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
 
 
   return (
-    <div className="w-full px-4 py-5 bg-white rounded-2xl overflow-x-auto">
+    <div className={`w-full px-3 py-4 rounded-xl overflow-x-auto ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
+
       
       {/* Filter Section */}
       <div className="flex flex-col lg:flex-row justify-between gap-4 mb-4">
@@ -54,7 +61,7 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
         <div className="flex flex-wrap items-center gap-3 ">
           {/* TableIcon Button */}
 <button
-  className="bg-gray-100 p-2 rounded-md"
+  className={` p-2 rounded-md ${darkMode ? "bg-blue-500 text-gray-500" : "text-black bg-gray-100"}`}
   onClick={() => setShowPopup((prev) => !prev)}
 >
   <TableIcon />
@@ -62,7 +69,8 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
 
 {/* Filter Popup Panel */}
 {showPopup && (
-  <div className="bg-white shadow-lg border rounded-lg p-4 w-full sm:w-auto mt-2 z-50">
+<div className={`${darkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-white border-gray-200 text-black"} shadow-lg border rounded-lg p-4 w-full sm:w-auto mt-2 z-50`}>
+
     {/* Top Row Buttons */}
     <div className="flex flex-wrap gap-3 mb-4">
   {['Today', 'This Week', 'This Month', 'Clear'].map((label) => {
@@ -71,10 +79,14 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
       <button
         key={label}
         className={`px-4 py-2 rounded-xl text-sm font-medium border ${
-          isClear
-            ? 'bg-red-600 text-white hover:bg-red-700 border-transparent'
-            : 'bg-white text-gray-700 hover:bg-gray-200 border-gray-400'
-        }`}
+    darkMode
+      ? isClear
+        ? "bg-red-600 text-white hover:bg-red-700 border-transparent"
+        : "bg-gray-800 text-white hover:bg-gray-700 border-gray-500"
+      : isClear
+        ? "bg-red-600 text-white hover:bg-red-700 border-transparent"
+        : "bg-white text-gray-700 hover:bg-gray-200 border-gray-400"
+  }`}
         onClick={() => {
           const today = new Date();
           let from = '';
@@ -115,23 +127,25 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
       <div className="flex items-center gap-2">
         <FaCalendarAlt />
         <span className="text-sm">From:</span>
-        <input
-          type="date"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
-          className="border rounded px-2 py-1 text-sm"
-        />
+       <input
+  type="date"
+  value={fromDate}
+  onChange={(e) => setFromDate(e.target.value)}
+  className={`border rounded px-2 py-1 text-sm ${darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-black"}`}
+/>
+
       </div>
 
       <div className="flex items-center gap-2">
         <FaCalendarAlt />
         <span className="text-sm">To:</span>
-        <input
-          type="date"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
-          className="border rounded px-2 py-1 text-sm"
-        />
+      <input
+  type="date"
+  value={fromDate}
+  onChange={(e) => setFromDate(e.target.value)}
+  className={`border rounded px-2 py-1 text-sm ${darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-black"}`}
+/>
+
       </div>
          <div className="text-right">
       <button
@@ -152,19 +166,19 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
 )}
 
 
-          <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-md text-sm">
-            <TableIcon2 />
+          <div className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${darkMode ?"bg-gray-700 text-white":"bg-gray-100 "}`}>
+           <span> <TableIcon2 /></span>
             <span>|</span>
-            <select className="bg-transparent outline-none">
+            <select className={`bg-transparent outline-none text-sm ${darkMode ? "bg-gray-800 text-white" : "text-black"}`}>
               <option>Team Score: Low To High</option>
             </select>
           </div>
 
-          <div className="bg-gray-100 px-3 py-2 rounded-md">
+          <div className={` px-3 py-2 rounded-md ${darkMode ? "bg-gray-700":"bg-gray-100" }`}>
             <select
               value={enabled}
               onChange={(e) => setEnabled(e.target.value)}
-              className="bg-transparent text-sm outline-none"
+              className={`bg-transparent outline-none text-sm ${darkMode ? "text-white" : "text-black"}`}
             >
               <option>Enabled</option>
               <option>Disabled</option>
@@ -177,7 +191,7 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSearch((prev) => !prev)}
-              className="bg-gray-100 p-2 rounded-md"
+             className={` px-3 py-2 rounded-md ${darkMode ? "bg-gray-700":"bg-gray-100" }`}
             >
               <IoMdSearch size={18} />
             </button>
@@ -185,12 +199,12 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
               <input
                 type="text"
                 placeholder="Search..."
-                className="px-3 py-2 border rounded-md text-sm w-full sm:w-auto"
+             className={`px-3 py-2 border rounded-md text-sm w-full sm:w-auto ${darkMode ? "bg-gray-800 border-gray-600 text-white" : "bg-white border-gray-300 text-black"}`}
               />
             )}
           </div>
-          <div className="bg-gray-100 px-3 py-2 rounded-md">
-            <select className="text-sm bg-transparent outline-none">
+          <div className={`px-3 py-2 rounded-md ${darkMode ?"bg-gray-700":"bg-gray-100 "}`}>
+            <select className={`bg-transparent outline-none text-sm ${darkMode ? "text-white" : "text-black"}`}>
               <option>All Levels</option>
             </select>
           </div>
@@ -198,9 +212,10 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
       </div>
 
       {/* Table Section */}
-      <div className="overflow-x-auto rounded-xl bg-white shadow-sm">
+      <div className="overflow-x-auto rounded bg-white ">
         <table className="min-w-[1200px] w-full text-sm text-left font-inter">
-          <thead className="bg-[#F9FAFB] text-[#6B7280] text-xs uppercase sticky top-0 z-10">
+        <thead className={`${darkMode ? "bg-gray-800 text-gray-300" : "bg-[#F9FAFB] text-[#6B7280]"} text-xs uppercase sticky top-0 z-10`}>
+
             <tr>
               <th className="px-4 py-3">Image</th>
               <th className="px-4 py-3">Team</th>
@@ -218,10 +233,12 @@ const totalPages = Math.ceil(data.length / rowsPerPage);
               <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
-         <tbody className="text-black">
+         <tbody className={`${darkMode ? "bg-gray-800 text-gray-300" : "bg-[#F9FAFB] text-[#6B7280]"} `}>
   {currentRows.map((row, i) => (
-    <tr key={i} className="hover:bg-[#F9FAFB]">
-      <td className="px-4 py-2">
+   <tr key={i} className={`${darkMode ? "hover:bg-gray-800" : "hover:bg-[#F9FAFB]"}`}>
+
+<td className={`px-4 py-2 ${darkMode ? "text-white" : "text-black"}`}>
+
         <img
           src={row.image}
           alt="Profile"
